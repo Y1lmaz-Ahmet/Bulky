@@ -30,8 +30,9 @@ namespace Bulky_MVC.Controllers
             {
                 _db.Categories.Add(obj); // add a new Category Object to the Database
                 _db.SaveChanges(); // Go to the Database and Save the new Object
+                return RedirectToAction("Index"); // return to the List of Categories, refers to Index Action
             }
-            return RedirectToAction("Index"); // return to the List of Categories, refers to Index Action
+            return View();
         }
     }
 }
