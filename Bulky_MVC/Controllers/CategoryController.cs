@@ -26,8 +26,11 @@ namespace Bulky_MVC.Controllers
         [HttpPost]
         public IActionResult Create(Category obj) 
         { 
-            _db.Categories.Add(obj); // add a new Category Object to the Database
-            _db.SaveChanges(); // Go to the Database and Save the new Object
+            if(ModelState.IsValid) // check if the object is valid
+            {
+                _db.Categories.Add(obj); // add a new Category Object to the Database
+                _db.SaveChanges(); // Go to the Database and Save the new Object
+            }
             return RedirectToAction("Index"); // return to the List of Categories, refers to Index Action
         }
     }
