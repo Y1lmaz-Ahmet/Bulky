@@ -65,23 +65,16 @@ namespace Bulky_MVC.Controllers
             }
             return View(CategoryFromDb); // return the View with the found Category
         }
-        //create a new Category and add it to the database - [httpPost] for posting in MVC
+        //Take the selected Category; Show it in a new UI with its data; Edit Category & Update it;
         [HttpPost]
         public IActionResult Edit(Category obj)
         {
-            // Server side Validation
-            // Check if Name and Display Order are the same; show an error message if they match
-            if (obj.Name == obj.DisplayOrder.ToString())
-            {
-                ModelState.AddModelError("Name", "The Display Order cannot exactly match the Name.");
-            }
-
             // Client side Validation
             // Check if the object is valid based on server-side and any additional client-side validations
             if (ModelState.IsValid)
             {
-                // If the object is valid, add a new Category Object to the Database
-                _db.Categories.Add(obj);
+                // If the object is valid, Update Category Object and send it to the database
+                _db.Categories.Update(obj);
 
                 // Save changes to the Database
                 _db.SaveChanges();
@@ -91,6 +84,43 @@ namespace Bulky_MVC.Controllers
             }
 
             return View();
+        }
+        // Delete existing Category object
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound(); // check if id is higher than 0 and not null
+            }
+            Category? CategoryFromDb = _db.Categories.Find(id); // find ONLY 1 specific Category object
+            if (CategoryFromDb == null) // check if found category exists
+            {
+                return NotFound();
+            }
+            return View(CategoryFromDb); // return the View with the found Category
+        }
+        //Remove a Category object by its Id
+        [HttpPost,ActionName("Delete")]
+        public IActionResult DeletePost(int? id)
+        {
+            // Client side Validation
+            // Check if the object is valid based on server-side and any additional client-side validations
+            Category? obj = _db.Categories.Find(id); // find the specifik Category object
+            if (obj == null) // object doesn't exist
+            {
+                return NotFound();
+            }
+            // remove the object from the database
+            _db.Categories.Remove(obj);
+
+            // save the database with the removed Category object
+            _db.SaveChanges();
+
+             // Redirect to the List of Categories (refers to Index Action)
+             return RedirectToAction("Index");
+            
+
+            
         }
     }
 }
