@@ -42,7 +42,7 @@ namespace Bulky_MVC.Controllers
 
                 // Save changes to the Database
                 _db.SaveChanges();
-
+                TempData["succes"] = "Category created succesfully!";
                 // Redirect to the List of Categories (refers to Index Action)
                 return RedirectToAction("Index");
             }
@@ -78,7 +78,7 @@ namespace Bulky_MVC.Controllers
 
                 // Save changes to the Database
                 _db.SaveChanges();
-
+                TempData["succes"] = "Category Updated succesfully!";
                 // Redirect to the List of Categories (refers to Index Action)
                 return RedirectToAction("Index");
             }
@@ -115,9 +115,9 @@ namespace Bulky_MVC.Controllers
 
             // save the database with the removed Category object
             _db.SaveChanges();
-
-             // Redirect to the List of Categories (refers to Index Action)
-             return RedirectToAction("Index");
+            TempData["succes"] = "Category Removed succesfully!";
+            // Redirect to the List of Categories (refers to Index Action)
+            return RedirectToAction("Index");
             
 
             
