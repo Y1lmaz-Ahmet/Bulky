@@ -19,15 +19,24 @@
     <tr>
         <th>Category Name</th>
         <th>Display Order</th>
+        <th>Options</th>
     </tr>
    
     </thead>
-    <tbody>
+        <tbody>
         @foreach(var obj in Model.OrderBy(x => x.DisplayOrder))
         {
         <tr>
             <td>@obj.Name</td>
             <td>@obj.DisplayOrder</td>
+            <td class="btn-group w-100" role="group">
+                <a asp-controller="Category" asp-route-id="@obj.Id" asp-action="Edit" class="btn btn-primary mx-2 ">
+                    <i class="bi bi-pencil-square"><br/> </i> Edit
+                </a>
+                 <a asp-controller="Category" asp-action="Delete" class="btn btn-danger mx-0">
+                    <i class="bi bi-trash-fill"><br/> </i> Delete
+                 </a>
+            </td>
         </tr>
         }
     </tbody>
