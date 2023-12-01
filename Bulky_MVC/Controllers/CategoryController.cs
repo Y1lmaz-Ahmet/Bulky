@@ -26,10 +26,11 @@ namespace Bulky_MVC.Controllers
         [HttpPost]
         public IActionResult Create(Category obj) 
         { 
-            if(obj.Name == obj.DisplayOrder.ToString())
+            if(obj.Name == obj.DisplayOrder.ToString()) // if Name en Displayorder are the same show error message
             {
                 ModelState.AddModelError("Name", "The Display Order cannot exactly match the Name.");
             }
+            
 
             if(ModelState.IsValid) // check if the object is valid
             {
