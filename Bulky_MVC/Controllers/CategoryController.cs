@@ -25,19 +25,28 @@ namespace Bulky_MVC.Controllers
         //create a new Category and add it to the database - [httpPost] for posting in MVC
         [HttpPost]
         public IActionResult Create(Category obj) 
-        { 
-            if(obj.Name == obj.DisplayOrder.ToString()) // if Name en Displayorder are the same show error message
+        {
+            // Server side Validation
+            // Check if Name and Display Order are the same; show an error message if they match
+            if (obj.Name == obj.DisplayOrder.ToString())
             {
                 ModelState.AddModelError("Name", "The Display Order cannot exactly match the Name.");
             }
-            
 
-            if(ModelState.IsValid) // check if the object is valid
+            // Client side Validation
+            // Check if the object is valid based on server-side and any additional client-side validations
+            if (ModelState.IsValid)
             {
-                _db.Categories.Add(obj); // add a new Category Object to the Database
-                _db.SaveChanges(); // Go to the Database and Save the new Object
-                return RedirectToAction("Index"); // return to the List of Categories, refers to Index Action
+                // If the object is valid, add a new Category Object to the Database
+                _db.Categories.Add(obj);
+
+                // Save changes to the Database
+                _db.SaveChanges();
+
+                // Redirect to the List of Categories (refers to Index Action)
+                return RedirectToAction("Index");
             }
+
             return View();
         }
     }
