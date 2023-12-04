@@ -1,5 +1,5 @@
-﻿using Bulky_MVC.Data;
-using Bulky_MVC.Models;
+﻿using Bulky.Models;
+using Bulky_MVC.DataAcess.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bulky_MVC.Controllers
