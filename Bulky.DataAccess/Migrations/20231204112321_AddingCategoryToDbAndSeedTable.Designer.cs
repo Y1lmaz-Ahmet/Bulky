@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Bulky_MVC.DataAcess.Migrations
+namespace Bulky.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231130154453_AddCategoryTableToDb")]
-    partial class AddCategoryTableToDb
+    [Migration("20231204112321_AddingCategoryToDbAndSeedTable")]
+    partial class AddingCategoryToDbAndSeedTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace Bulky_MVC.DataAcess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Bulky_MVC.Models.Category", b =>
+            modelBuilder.Entity("Bulky.Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -37,11 +37,32 @@ namespace Bulky_MVC.DataAcess.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DisplayOrder = 1,
+                            Name = "Action"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DisplayOrder = 2,
+                            Name = "SciFi"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DisplayOrder = 3,
+                            Name = "History"
+                        });
                 });
 #pragma warning restore 612, 618
         }
