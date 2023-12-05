@@ -4,8 +4,9 @@ using BulkyBook.DataAccess.Repository;
 using BulkyBook.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Bulky_MVC.Controllers
+namespace BulkyBookWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork; // accessing database 
@@ -15,7 +16,7 @@ namespace Bulky_MVC.Controllers
         }
         public IActionResult Index()
         {
-            List<Category> objCategoryList =_unitOfWork.Category.GetAll().ToList(); // make a list of categorie objects
+            List<Category> objCategoryList = _unitOfWork.Category.GetAll().ToList(); // make a list of categorie objects
             return View(objCategoryList); // show the categorie objects in the Index View
         }
 
@@ -26,7 +27,7 @@ namespace Bulky_MVC.Controllers
         }
         //create a new Category and add it to the database - [httpPost] for posting in MVC
         [HttpPost]
-        public IActionResult Create(Category obj) 
+        public IActionResult Create(Category obj)
         {
             // Server side Validation
             // Check if Name and Display Order are the same; show an error message if they match
@@ -54,14 +55,14 @@ namespace Bulky_MVC.Controllers
         // edit existing Category object
         public IActionResult Edit(int? id)
         {
-            if(id == null || id == 0) 
+            if (id == null || id == 0)
             {
                 return NotFound(); // check if id is higher than 0 and not null
             }
             Category? CategoryFromDb = _unitOfWork.Category.Get(u => u.Id == id); // find ONLY 1 specific Category object
             //Category? CategoryFromDb2 = _db.Categories.FirstOrDefault(x => x.Id== id);
             //Category? CategoryFromDb3 = _db.Categories.Where(x => x.Id == id).FirstOrDefault();
-            if(CategoryFromDb == null) // check if found category exists
+            if (CategoryFromDb == null) // check if found category exists
             {
                 return NotFound();
             }
@@ -102,7 +103,7 @@ namespace Bulky_MVC.Controllers
             return View(CategoryFromDb); // return the View with the found Category
         }
         //Remove a Category object by its Id
-        [HttpPost,ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
             // Client side Validation
@@ -120,9 +121,9 @@ namespace Bulky_MVC.Controllers
             TempData["succes"] = "Category Removed succesfully!";
             // Redirect to the List of Categories (refers to Index Action)
             return RedirectToAction("Index");
-            
 
-            
+
+
         }
     }
 }
