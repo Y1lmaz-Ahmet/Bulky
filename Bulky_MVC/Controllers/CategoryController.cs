@@ -1,7 +1,5 @@
-﻿using Bulky.DataAccess.Repository;
-using Bulky.DataAccess.Repository.IRepository;
+﻿using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models;
-using Bulky_MVC.DataAcess.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bulky_MVC.Controllers
