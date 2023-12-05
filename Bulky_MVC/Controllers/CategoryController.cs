@@ -1,4 +1,6 @@
-﻿using Bulky.Models;
+﻿using Bulky.DataAccess.Repository;
+using Bulky.DataAccess.Repository.IRepository;
+using Bulky.Models;
 using Bulky_MVC.DataAcess.Data;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,14 +8,14 @@ namespace Bulky_MVC.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _db; // accessing database 
-        public CategoryController(ApplicationDbContext db)
+        private readonly ICategoryRepository _categoryRepository; // accessing database 
+        public CategoryController(ICategoryRepository db)
         {
-            _db = db; // make instance of database & set property 
+            _categoryRepository = db; // make instance of database & set property 
         }
         public IActionResult Index()
         {
-            List<Category> objCategoryList = _db.Categories.ToList(); // make a list of categorie objects
+            List<Category> objCategoryList = _categoryRepository.GetAll().ToList(); // make a list of categorie objects
             return View(objCategoryList); // show the categorie objects in the Index View
         }
 
@@ -38,10 +40,10 @@ namespace Bulky_MVC.Controllers
             if (ModelState.IsValid)
             {
                 // If the object is valid, add a new Category Object to the Database
-                _db.Categories.Add(obj);
+                _categoryRepository.Add(obj);
 
                 // Save changes to the Database
-                _db.SaveChanges();
+                _categoryRepository.Save();
                 TempData["succes"] = "Category created succesfully!";
                 // Redirect to the List of Categories (refers to Index Action)
                 return RedirectToAction("Index");
@@ -56,7 +58,7 @@ namespace Bulky_MVC.Controllers
             {
                 return NotFound(); // check if id is higher than 0 and not null
             }
-            Category? CategoryFromDb = _db.Categories.Find(id); // find ONLY 1 specific Category object
+            Category? CategoryFromDb = _categoryRepository.Get(u => u.Id == id); // find ONLY 1 specific Category object
             //Category? CategoryFromDb2 = _db.Categories.FirstOrDefault(x => x.Id== id);
             //Category? CategoryFromDb3 = _db.Categories.Where(x => x.Id == id).FirstOrDefault();
             if(CategoryFromDb == null) // check if found category exists
@@ -74,10 +76,10 @@ namespace Bulky_MVC.Controllers
             if (ModelState.IsValid)
             {
                 // If the object is valid, Update Category Object and send it to the database
-                _db.Categories.Update(obj);
+                _categoryRepository.Update(obj);
 
                 // Save changes to the Database
-                _db.SaveChanges();
+                _categoryRepository.Save();
                 TempData["succes"] = "Category Updated succesfully!";
                 // Redirect to the List of Categories (refers to Index Action)
                 return RedirectToAction("Index");
@@ -92,7 +94,7 @@ namespace Bulky_MVC.Controllers
             {
                 return NotFound(); // check if id is higher than 0 and not null
             }
-            Category? CategoryFromDb = _db.Categories.Find(id); // find ONLY 1 specific Category object
+            Category? CategoryFromDb = _categoryRepository.Get(u => u.Id == id); // find ONLY 1 specific Category object
             if (CategoryFromDb == null) // check if found category exists
             {
                 return NotFound();
@@ -105,16 +107,16 @@ namespace Bulky_MVC.Controllers
         {
             // Client side Validation
             // Check if the object is valid based on server-side and any additional client-side validations
-            Category? obj = _db.Categories.Find(id); // find the specifik Category object
+            Category? obj = _categoryRepository.Get(u => u.Id == id); // find the specifik Category object
             if (obj == null) // object doesn't exist
             {
                 return NotFound();
             }
             // remove the object from the database
-            _db.Categories.Remove(obj);
+            _categoryRepository.Remove(obj);
 
             // save the database with the removed Category object
-            _db.SaveChanges();
+            _categoryRepository.Save();
             TempData["succes"] = "Category Removed succesfully!";
             // Redirect to the List of Categories (refers to Index Action)
             return RedirectToAction("Index");
