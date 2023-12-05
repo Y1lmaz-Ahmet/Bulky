@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 
 namespace Bulky.DataAccess.Repository.IRepository
 {
-    public interface  IRepository<T> where T : class
+    public interface IRepository<T> where T : class
     {
-        // T - Category
-        IEnumerable<T> GetAll();
-        T Get(Expression<Func<T,bool>> filter); // FirstOrDefault with LINQ = Expression<Func<T,bool>> filter
+        // T - Category ---- T = Generic
+        IEnumerable<T> GetAll(); // IEnumerable = used when Iterating through objects is required
+        T Get(Expression<Func<T, bool>> filter); 
         void Add(T entity);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entity);
+
     }
+
 }
